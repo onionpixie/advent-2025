@@ -1,0 +1,14 @@
+C:\Repos\advent-2025\advent-2025\bin\Debug\net8.0\advent-2025.exe
+C:\Repos\advent-2025\advent-2025\bin\Debug\net8.0\advent-2025.deps.json
+C:\Repos\advent-2025\advent-2025\bin\Debug\net8.0\advent-2025.runtimeconfig.json
+C:\Repos\advent-2025\advent-2025\bin\Debug\net8.0\advent-2025.dll
+C:\Repos\advent-2025\advent-2025\bin\Debug\net8.0\advent-2025.pdb
+C:\Repos\advent-2025\advent-2025\obj\Debug\net8.0\advent-2025.GeneratedMSBuildEditorConfig.editorconfig
+C:\Repos\advent-2025\advent-2025\obj\Debug\net8.0\advent-2025.AssemblyInfoInputs.cache
+C:\Repos\advent-2025\advent-2025\obj\Debug\net8.0\advent-2025.AssemblyInfo.cs
+C:\Repos\advent-2025\advent-2025\obj\Debug\net8.0\advent-2025.csproj.CoreCompileInputs.cache
+C:\Repos\advent-2025\advent-2025\obj\Debug\net8.0\advent-2025.dll
+C:\Repos\advent-2025\advent-2025\obj\Debug\net8.0\refint\advent-2025.dll
+C:\Repos\advent-2025\advent-2025\obj\Debug\net8.0\advent-2025.pdb
+C:\Repos\advent-2025\advent-2025\obj\Debug\net8.0\advent-2025.genruntimeconfig.cache
+C:\Repos\advent-2025\advent-2025\obj\Debug\net8.0\ref\advent-2025.dll
