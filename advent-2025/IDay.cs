@@ -1,8 +1,7 @@
-namespace AdventOfCode
-{
-    public interface IDay {
-        public string SolveA();
+namespace AdventOfCode;
 
-        public string SolveB();
-    }
+public interface IDay {
+    public string SolveA();
+
+    public string SolveB();
 }
