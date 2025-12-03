@@ -44,5 +44,5 @@ public class Day
     public static int[] GetInputAsIntArray(int day)
     {
         return InputLines(day)[0].Where(char.IsDigit).Select(x => int.Parse(x.ToString())).ToArray();
-    }
+    }  
 }
