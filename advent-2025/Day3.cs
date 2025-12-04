@@ -4,42 +4,29 @@ namespace AdventOfCode
     {
         public string SolveA()
         {
-            var inputLines = InputLines(3);
-            var batteryLines = new List<List<int>>();
-
-            foreach (var line in inputLines)
+           var inputLines = InputLines(3);
+            long totalMaxValue = 0;
+            foreach (var input in inputLines)
             {
-                batteryLines.Add(line.Where(char.IsDigit).Select(x => int.Parse(x.ToString())).ToList());
-            }
+                var line = input.ToCharArray();
+                var digits = new List<char>();
+                var digitCount = 2;
+                var currentStartPoint = 0;
 
-            var totalMaxValue = 0;
-            foreach (var line in batteryLines)
-            {
-                // find biggest available first digit.
-                var firstDigit = 9;
-                while (!line.Take(line.Count() - 1).Contains(firstDigit))
+                while (digitCount > 0)
                 {
-                    firstDigit -= 1;
-                    if (firstDigit == 0) throw new ArgumentException("while loop error!");
+                    var lineCount = line.Count();
+                    var length = lineCount - currentStartPoint - digitCount + 1;
+                    var viableRange = line.AsSpan(0 + currentStartPoint, length).ToArray();
+                     // find biggest
+                    var biggest = viableRange.Max();
+                    digits.Add(biggest);
+                    var index = Array.IndexOf(viableRange, biggest);
+                    currentStartPoint = index + currentStartPoint + 1;
+                    digitCount -= 1;
                 }
 
-                var maxValue = firstDigit * 10;
-                var startingValue = maxValue;
-
-                for (int i = 0; i < line.Count - 1; i++)
-                {
-                    if (line[i] != firstDigit) continue;
-
-                    for (int j = 1; j < line.Count - i; j++)
-                    {
-                        if (startingValue + line[i + j] > maxValue)
-                        {
-                            maxValue = startingValue + line[i + j];
-                        }
-                    }
-                }
-
-                totalMaxValue += maxValue;
+                totalMaxValue +=  long.Parse(new string(digits.ToArray()));
             }
 
             return totalMaxValue.ToString();
@@ -48,52 +35,28 @@ namespace AdventOfCode
         public string SolveB()
         {
             var inputLines = InputLines(3);
-            var batteryLines = new List<List<int>>();
-
-            foreach (var line in inputLines)
+            long totalMaxValue = 0;
+            foreach (var input in inputLines)
             {
-                batteryLines.Add(line.Where(char.IsDigit).Select(x => int.Parse(x.ToString())).ToList());
-            }
+                var line = input.ToCharArray();
+                var digits = new List<char>();
+                var digitCount = 12;
+                var currentStartPoint = 0;
 
-            var totalMaxValue = 0;
-            foreach (var line in batteryLines)
-            {
-                // find biggest available first digit (number has to be 12 long so we dont'consider anything in last 11).
-                var firstDigit = line.Take(line.Count() - 11).Max();
-                
-                var digits = new List<int>() {firstDigit};
-                var digitCount = 10;
-                
-                
-                for (int i = 0; i < 11; i++)
+                while (digitCount > 0)
                 {
-                    if (line[i] != digits.Last()) continue;
-
-                    var largestNumberToRight = line.Take(line.Count() - digitCount).Max();
+                    var lineCount = line.Count();
+                    var length = lineCount - currentStartPoint - digitCount + 1;
+                    var viableRange = line.AsSpan(0 + currentStartPoint, length).ToArray();
+                     // find biggest
+                    var biggest = viableRange.Max();
+                    digits.Add(biggest);
+                    var index = Array.IndexOf(viableRange, biggest);
+                    currentStartPoint = index + currentStartPoint + 1;
+                    digitCount -= 1;
                 }
 
-                for (int i = 0; i < line.Count - 1; i++)
-                {
-                    for (int j = 0; j < digitCount - 1; j++)
-                    {
-                        if (line[j] != currentDigit) continue;
-
-                        for (int k = 1; k < line.Count - j; k++)
-                        {
-                            var potentialNextValue = startingValue + (line[k + j] * 10 * digitCount - 1);
-                            if (potentialNextValue > maxValue)
-                            {
-                                maxValue = potentialNextValue;
-                                nextDigit = line[k + j];
-                            }
-                        }
-
-                        currentDigit = nextDigit;
-                    }
-
-                    totalMaxValue += maxValue;
-                    digitCount = 12;
-                }
+                totalMaxValue +=  long.Parse(new string(digits.ToArray()));
             }
 
             return totalMaxValue.ToString();
