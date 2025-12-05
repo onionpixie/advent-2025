@@ -41,51 +41,51 @@ namespace AdventOfCode
                 {
                     var start = long.Parse(line.Split('-')[0]);
                     var end = long.Parse(line.Split('-')[1]);
-                    var duplicate = false;
-                    var newRange = new IngredientRange(start, end);
-
-                    foreach(var freshIngredientRange in freshIngredientRanges)
-                    {
-                        if (freshIngredientRange.Contains(start))
-                        {
-                            if (freshIngredientRange.Contains(end))
-                            {
-                                duplicate = true;
-                                break;
-                            }
-
-                            newRange.Start = freshIngredientRange.End + 1;
-                        }
-                        else if (freshIngredientRange.Contains(end))
-                        {
-                            newRange.End = freshIngredientRange.Start - 1;
-                        }
-                        else
-                        {
-                            if (newRange.Contains(freshIngredientRange.Start) && newRange.Contains(freshIngredientRange.End))
-                            {
-                                // Need to remove
-                                Console.WriteLine("argh");
-                            }
-                        }
-                        
-                    }
-
-                    if (!duplicate){
-                        freshIngredientRanges.Add(newRange);
-                    }
+                    freshIngredientRanges.Add(new IngredientRange(start, end));
                 }
             }
 
-            foreach(var freshIngredientRange in freshIngredientRanges.OrderBy(x => x.Start))
+            freshIngredientRanges = freshIngredientRanges.OrderBy(x => x.Start).ToList();
+            var validRanges = new List<IngredientRange>();
+            for (int i = 0; i < freshIngredientRanges.Count; i++)
             {
-                Console.WriteLine($"{freshIngredientRange.Start} {freshIngredientRange.End} {freshIngredientRange.Size}");
+                var startToTest = freshIngredientRanges[i].Start;
+                var endToTest = freshIngredientRanges[i].End;
+                var covered = false;
+                for (int j = 0; j < freshIngredientRanges.Count; j++)
+                {
+                    if (i == j) break;
+
+                    if (freshIngredientRanges[j].Contains(startToTest))
+                    {
+                        if (freshIngredientRanges[j].Contains(endToTest)) {
+                            covered = true;
+                            break;
+                        }
+
+                        startToTest = freshIngredientRanges[j].End + 1;
+                    }
+                    else if (freshIngredientRanges[j].Contains(endToTest))
+                    {
+                        endToTest = freshIngredientRanges[j].Start - 1;
+                    }
+                }
+
+                if (!covered)
+                {
+                    freshIngredientRanges[i].Start = startToTest;
+                    freshIngredientRanges[i].End = endToTest;
+                    validRanges.Add(freshIngredientRanges[i]);
+                }
+            }
+            
+            foreach(var validRange in validRanges.OrderBy(x => x.Start))
+            {
+                Console.WriteLine($"{validRange.Start} {validRange.End} {validRange.Size}");
                  
-                if (freshIngredientValidRanges + freshIngredientRange.Size < freshIngredientValidRanges) throw new InvalidOperationException();
-                freshIngredientValidRanges += freshIngredientRange.Size;
+                freshIngredientValidRanges += validRange.Size;
             }
 
-            Console.WriteLine(freshIngredientRanges.Count());
 
             return freshIngredientValidRanges.ToString();
         }
