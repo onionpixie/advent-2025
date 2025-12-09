@@ -22,7 +22,7 @@ namespace AdventOfCode
                         continue;
                     }
 
-                    // otherwise we split (hast set deals with dups)
+                    // otherwise we split (hash set deals with dups)
                     splitCount += 1;
                     newLightBeamPoints.Add(j-1);
                     newLightBeamPoints.Add(j+1);
@@ -37,42 +37,55 @@ namespace AdventOfCode
         public string SolveB()
         {
             var input = GetInputAsCharMatrix(7);
-            var startPoint = Array.IndexOf(input[0].ToArray(), 'S'); 
-            var lightBeamPoints = new List<int>() {startPoint};
-            var timePoints = 0;
-            for (int i = 1; i < input.Length - 1 ; i++)
+            var startPoint = Array.IndexOf([.. input[0]], 'S'); 
+            var lightBeamPoints = new Dictionary<int, long>
             {
-                var newLightBeamPoints = new List<int>();
+                { startPoint, 1 }
+            };
+            for (int i = 2; i < input.Length - 1 ; i += 2)
+            {
+                var newLightBeamPoints = new Dictionary<int, long>();
                 for (int j = 0; j < input[0].ToArray().Length - 1 ; j++)
                 {
                     // if there is nothing to split we don't care
-                    if (!lightBeamPoints.Contains(j)) continue;
+                    if (!lightBeamPoints.ContainsKey(j)) continue;
                     
                     // we didn't split so carry beam down to next line
                     if (input[i][j] == '.') {
-                        var noOfPointsAtPoint = lightBeamPoints.Where(p => p ==j).Count();
-                        while (noOfPointsAtPoint > 0){
-                            newLightBeamPoints.Add(j);
-                            noOfPointsAtPoint -=1;
-                            if (i == input.Length - 2){
-                                timePoints += 2;
-                            }
+                        if (newLightBeamPoints.TryGetValue(j, out long value))
+                        {
+                            newLightBeamPoints[j] = value + lightBeamPoints[j];
+                        }
+                        else
+                        {
+                            newLightBeamPoints.Add(j, lightBeamPoints[j]);
                         }
                         continue;
                     }
 
-                    // otherwise we split (hast set deals with dups)
-                    if (i == input.Length - 2){
-                    timePoints += 2;
+                    if (newLightBeamPoints.ContainsKey(j - 1))
+                    {
+                        newLightBeamPoints[j-1] = newLightBeamPoints[j-1] + lightBeamPoints[j];
                     }
-                    newLightBeamPoints.Add(j-1);
-                    newLightBeamPoints.Add(j+1);
+                    else
+                    {
+                        newLightBeamPoints.Add(j - 1, lightBeamPoints[j]);
+                    }
+
+                    if (newLightBeamPoints.ContainsKey(j + 1))
+                    {
+                        newLightBeamPoints[j+1] = newLightBeamPoints[j+1] + lightBeamPoints[j];
+                    }
+                    else
+                    {
+                        newLightBeamPoints.Add(j + 1, lightBeamPoints[j]);
+                    }
                 }
 
                 lightBeamPoints = newLightBeamPoints;
             }
-            Console.WriteLine(timePoints);
-            return lightBeamPoints.Count().ToString();
+            
+            return lightBeamPoints.Sum(x => x.Value).ToString();
         }
     }
 }
