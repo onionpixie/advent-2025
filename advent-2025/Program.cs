@@ -1,7 +1,7 @@
 ﻿using AdventOfCode;
 
-var day = new Day7();
-Console.WriteLine(day.SolveB());
+var day = new Day8();
+Console.WriteLine(day.SolveA());
 
 //Console.WriteLine("Enter the day you want to run:");
 
